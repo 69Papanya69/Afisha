@@ -1,0 +1,55 @@
+@startuml
+' Настройка BPMN
+!define BPMN https://raw.githubusercontent.com/plantuml-stdlib/Cicon-PlantUML/master/BPMN
+!includeurl BPMN/Common.puml
+!includeurl BPMN/Pool.puml
+!includeurl BPMN/Lane.puml
+!includeurl BPMN/Start.puml
+!includeurl BPMN/End.puml
+!includeurl BPMN/Task.puml
+!includeurl BPMN/Gateway.puml
+!includeurl BPMN/Event.puml
+!includeurl BPMN/Arrow.puml
+
+' Пул: Клиент
+BPMNPool(Client, "Клиент") {
+    BPMNStartEvent(startClient, "Начало")
+    BPMNTask(selectItems, "Выбор товаров")
+    BPMNTask(addToCart, "Добавить в корзину")
+    BPMNTask(placeOrder, "Оформление заказа")
+    BPMNTask(enterInfo, "Ввод данных")
+    BPMNTask(confirmOrder, "Подтверждение заказа")
+    BPMNEndEvent(endClient, "Ожидание доставки")
+
+    startClient --> selectItems --> addToCart --> placeOrder --> enterInfo --> confirmOrder --> endClient
+}
+
+' Пул: Интернет-магазин
+BPMNPool(Store, "Интернет-магазин") {
+    BPMNStartEvent(startStore, "Получение заказа")
+    BPMNTask(checkStock, "Проверка наличия товара")
+    BPMNGateway(stockAvailable, "Товар в наличии?")
+    BPMNTask(notifyCustomer, "Уведомление клиента (нет в наличии)")
+    BPMNEndEvent(endNoStock, "Завершение")
+
+    BPMNTask(confirmPayment, "Подтверждение оплаты")
+    BPMNTask(packOrder, "Упаковка заказа")
+    BPMNTask(sendToDelivery, "Передача в доставку")
+    BPMNEndEvent(endStore, "Ожидание доставки")
+
+    startStore --> checkStock --> stockAvailable
+    stockAvailable -->[Нет] notifyCustomer --> endNoStock
+    stockAvailable -->[Да] confirmPayment --> packOrder --> sendToDelivery --> endStore
+}
+
+' Пул: Служба доставки
+BPMNPool(Delivery, "Служба доставки") {
+    BPMNStartEvent(startDelivery, "Получение посылки")
+    BPMNTask(deliverOrder, "Доставка заказа")
+    BPMNTask(confirmReceipt, "Подтверждение получения")
+    BPMNEndEvent(endDelivery, "Завершение")
+
+    startDelivery --> deliverOrder --> confirmReceipt --> endDelivery
+}
+
+@enduml

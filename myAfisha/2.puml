@@ -1,0 +1,17 @@
+@startuml
+
+actor "Покупатель" as Customer
+actor "Гость" as Guest
+actor "Администратор" as Admin
+actor "Служба доставки" as DeliveryService
+
+Guest --> (Регистрация/Вход)
+
+Customer --> (Отслеживание заказа)
+Customer --> (Регистрация/Вход)
+
+Admin --> (Управление контентом)
+
+(Отслеживание заказа) --> DeliveryService
+
+@enduml

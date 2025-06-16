@@ -1,0 +1,59 @@
+' Скачайте BPMN-стили из https://github.com/plantuml-stdlib/Cicon-PlantUML/tree/master/BPMN
+' и поместите папку BPMN рядом с этим файлом.
+' После этого замените все !includeurl на !include
+
+@startuml
+' Настройка BPMN
+!define BPMN ./BPMN
+!include BPMN/Common.puml
+!include BPMN/Pool.puml
+!include BPMN/Lane.puml
+!include BPMN/Start.puml
+!include BPMN/End.puml
+!include BPMN/Task.puml
+!include BPMN/Gateway.puml
+!include BPMN/Event.puml
+!include BPMN/Arrow.puml
+
+' Пул: Клиент
+BPMNPool(Client, "Клиент") {
+    BPMNStartEvent(startClient, "Начало")
+    BPMNTask(selectItems, "Выбор товаров")
+    BPMNTask(addToCart, "Добавить в корзину")
+    BPMNTask(placeOrder, "Оформление заказа")
+    BPMNTask(enterInfo, "Ввод данных")
+    BPMNTask(confirmOrder, "Подтверждение заказа")
+    BPMNEndEvent(endClient, "Ожидание доставки")
+
+    startClient --> selectItems --> addToCart --> placeOrder --> enterInfo --> confirmOrder --> endClient
+}
+
+' Пул: Интернет-магазин
+BPMNPool(Store, "Интернет-магазин") {
+    BPMNStartEvent(startStore, "Получение заказа")
+    BPMNTask(checkStock, "Проверка наличия товара")
+    BPMNGateway(stockAvailable, "Товар в наличии?")
+    BPMNTask(notifyCustomer, "Уведомление клиента (нет в наличии)")
+    BPMNEndEvent(endNoStock, "Завершение")
+
+    BPMNTask(confirmPayment, "Подтверждение оплаты")
+    BPMNTask(packOrder, "Упаковка заказа")
+    BPMNTask(sendToDelivery, "Передача в доставку")
+    BPMNEndEvent(endStore, "Ожидание доставки")
+
+    startStore --> checkStock --> stockAvailable
+    stockAvailable -->[Нет] notifyCustomer --> endNoStock
+    stockAvailable -->[Да] confirmPayment --> packOrder --> sendToDelivery --> endStore
+}
+
+' Пул: Служба доставки
+BPMNPool(Delivery, "Служба доставки") {
+    BPMNStartEvent(startDelivery, "Получение посылки")
+    BPMNTask(deliverOrder, "Доставка заказа")
+    BPMNTask(confirmReceipt, "Подтверждение получения")
+    BPMNEndEvent(endDelivery, "Завершение")
+
+    startDelivery --> deliverOrder --> confirmReceipt --> endDelivery
+}
+
+@enduml

@@ -1,0 +1,994 @@
+{
+	"info": {
+		"_postman_id": "e8f5c6d4-3b2a-4c1f-8d9e-f7a6b5c4d3e2",
+		"name": "МояАфиша API",
+		"description": "Коллекция запросов для тестирования API проекта МояАфиша",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Аутентификация",
+			"item": [
+				{
+					"name": "Получение токена",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"admin\",\n    \"password\": \"admin\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8000/api/token/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"token",
+								""
+							]
+						},
+						"description": "Получение JWT токена для аутентификации"
+					},
+					"response": []
+				},
+				{
+					"name": "Обновление токена",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"refresh\": \"ваш_refresh_токен\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8000/api/token/refresh/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"token",
+								"refresh",
+								""
+							]
+						},
+						"description": "Обновление JWT токена с помощью refresh токена"
+					},
+					"response": []
+				},
+				{
+					"name": "Регистрация пользователя",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"новый_пользователь\",\n    \"email\": \"user@example.com\",\n    \"password\": \"secure_password\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8000/api/register/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"register",
+								""
+							]
+						},
+						"description": "Регистрация нового пользователя"
+					},
+					"response": []
+				},
+				{
+					"name": "Информация о пользователе",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8000/api/user/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"user",
+								""
+							]
+						},
+						"description": "Получение информации о текущем пользователе"
+					},
+					"response": []
+				}
+			],
+			"description": "Запросы для аутентификации и управления пользователями"
+		},
+		{
+			"name": "Спектакли",
+			"item": [
+				{
+					"name": "Список всех спектаклей",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8000/api/performances/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"performances",
+								""
+							]
+						},
+						"description": "Получение списка всех спектаклей"
+					},
+					"response": []
+				},
+				{
+					"name": "Детали спектакля",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8000/api/performances/1/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"performances",
+								"1",
+								""
+							]
+						},
+						"description": "Получение подробной информации о спектакле по ID"
+					},
+					"response": []
+				},
+				{
+					"name": "Фильтрация спектаклей",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8000/api/performances/filter/?name=Гамлет&category=1&min_price=1000&max_price=3000&date_after=2023-01-01&theater=Большой",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"performances",
+								"filter",
+								""
+							],
+							"query": [
+								{
+									"key": "name",
+									"value": "Гамлет",
+									"description": "Поиск по названию"
+								},
+								{
+									"key": "category",
+									"value": "1",
+									"description": "Фильтр по ID категории"
+								},
+								{
+									"key": "min_price",
+									"value": "1000",
+									"description": "Минимальная цена"
+								},
+								{
+									"key": "max_price",
+									"value": "3000",
+									"description": "Максимальная цена"
+								},
+								{
+									"key": "date_after",
+									"value": "2023-01-01",
+									"description": "Дата после"
+								},
+								{
+									"key": "theater",
+									"value": "Большой",
+									"description": "Поиск по названию театра"
+								}
+							]
+						},
+						"description": "Фильтрация спектаклей по различным параметрам"
+					},
+					"response": []
+				},
+				{
+					"name": "Поиск спектаклей",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8000/api/performances/search/?q=балет",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"performances",
+								"search",
+								""
+							],
+							"query": [
+								{
+									"key": "q",
+									"value": "балет",
+									"description": "Поисковый запрос"
+								}
+							]
+						},
+						"description": "Поиск спектаклей по ключевому слову"
+					},
+					"response": []
+				},
+				{
+					"name": "Последние спектакли",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8000/api/performances/last/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"performances",
+								"last",
+								""
+							]
+						},
+						"description": "Получение последних добавленных спектаклей"
+					},
+					"response": []
+				},
+				{
+					"name": "Расписание спектакля",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8000/api/performances/1/schedules/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"performances",
+								"1",
+								"schedules",
+								""
+							]
+						},
+						"description": "Получение расписания для конкретного спектакля"
+					},
+					"response": []
+				},
+				{
+					"name": "Удаление спектакля (админ)",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8000/api/performances/1/admin_delete/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"performances",
+								"1",
+								"admin_delete",
+								""
+							]
+						},
+						"description": "Удаление спектакля (только для администраторов)"
+					},
+					"response": []
+				}
+			],
+			"description": "Запросы для работы со спектаклями"
+		},
+		{
+			"name": "Отзывы",
+			"item": [
+				{
+					"name": "Добавить отзыв",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"text\": \"Отличный спектакль! Всем рекомендую.\",\n    \"rating\": 5\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8000/api/performances/1/add_review/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"performances",
+								"1",
+								"add_review",
+								""
+							]
+						},
+						"description": "Добавление отзыва к спектаклю"
+					},
+					"response": []
+				},
+				{
+					"name": "Обновить отзыв",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"text\": \"Обновленный текст отзыва\",\n    \"rating\": 4\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8000/api/reviews/1/update/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"reviews",
+								"1",
+								"update",
+								""
+							]
+						},
+						"description": "Обновление существующего отзыва"
+					},
+					"response": []
+				},
+				{
+					"name": "Удалить отзыв",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8000/api/reviews/1/delete/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"reviews",
+								"1",
+								"delete",
+								""
+							]
+						},
+						"description": "Удаление отзыва пользователем"
+					},
+					"response": []
+				},
+				{
+					"name": "Удалить отзыв (админ)",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8000/api/reviews/1/admin_delete/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"reviews",
+								"1",
+								"admin_delete",
+								""
+							]
+						},
+						"description": "Удаление отзыва администратором"
+					},
+					"response": []
+				}
+			],
+			"description": "Запросы для работы с отзывами"
+		},
+		{
+			"name": "Корзина",
+			"item": [
+				{
+					"name": "Список товаров в корзине",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8000/api/users/cart/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"users",
+								"cart",
+								""
+							]
+						},
+						"description": "Получение списка товаров в корзине пользователя"
+					},
+					"response": []
+				},
+				{
+					"name": "Добавить товар в корзину",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"product_id\": 1,\n    \"quantity\": 2\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8000/api/users/cart/add/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"users",
+								"cart",
+								"add",
+								""
+							]
+						},
+						"description": "Добавление товара в корзину пользователя"
+					},
+					"response": []
+				},
+				{
+					"name": "Обновить количество товара",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"quantity\": 3\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8000/api/users/cart/update/1/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"users",
+								"cart",
+								"update",
+								"1",
+								""
+							]
+						},
+						"description": "Обновление количества товара в корзине"
+					},
+					"response": []
+				},
+				{
+					"name": "Удалить товар из корзины",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8000/api/users/cart/remove/1/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"users",
+								"cart",
+								"remove",
+								"1",
+								""
+							]
+						},
+						"description": "Удаление товара из корзины"
+					},
+					"response": []
+				},
+				{
+					"name": "Очистить корзину",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8000/api/users/cart/clear/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"users",
+								"cart",
+								"clear",
+								""
+							]
+						},
+						"description": "Очистка корзины пользователя"
+					},
+					"response": []
+				}
+			],
+			"description": "Запросы для работы с корзиной"
+		},
+		{
+			"name": "Товары",
+			"item": [
+				{
+					"name": "Список товаров",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8000/api/products/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"products",
+								""
+							]
+						},
+						"description": "Получение списка всех товаров"
+					},
+					"response": []
+				},
+				{
+					"name": "Товары для спектакля",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8000/api/products/by-performance/1/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"products",
+								"by-performance",
+								"1",
+								""
+							]
+						},
+						"description": "Получение товаров, связанных с конкретным спектаклем"
+					},
+					"response": []
+				},
+				{
+					"name": "Наличие товара",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8000/api/products/1/stock/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"products",
+								"1",
+								"stock",
+								""
+							]
+						},
+						"description": "Проверка наличия товара на складе"
+					},
+					"response": []
+				},
+				{
+					"name": "Создать товар из спектакля",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"performance_id\": 1,\n    \"price\": 1500,\n    \"stock_quantity\": 100,\n    \"description\": \"Билет на спектакль\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8000/api/products/create-from-performance/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"products",
+								"create-from-performance",
+								""
+							]
+						},
+						"description": "Создание товара на основе спектакля"
+					},
+					"response": []
+				}
+			],
+			"description": "Запросы для работы с товарами"
+		},
+		{
+			"name": "Заказы",
+			"item": [
+				{
+					"name": "Список заказов пользователя",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8000/api/orders/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"orders",
+								""
+							]
+						},
+						"description": "Получение списка заказов пользователя"
+					},
+					"response": []
+				},
+				{
+					"name": "Детали заказа",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8000/api/orders/1/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"orders",
+								"1",
+								""
+							]
+						},
+						"description": "Получение подробной информации о заказе"
+					},
+					"response": []
+				},
+				{
+					"name": "Создать заказ из корзины",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"delivery_address\": \"ул. Примерная, д. 123, кв. 45\",\n    \"payment_method\": \"card\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8000/api/orders/create/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"orders",
+								"create",
+								""
+							]
+						},
+						"description": "Создание заказа на основе товаров в корзине"
+					},
+					"response": []
+				},
+				{
+					"name": "Отменить заказ",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8000/api/orders/1/cancel/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"orders",
+								"1",
+								"cancel",
+								""
+							]
+						},
+						"description": "Отмена заказа пользователем"
+					},
+					"response": []
+				}
+			],
+			"description": "Запросы для работы с заказами"
+		},
+		{
+			"name": "Прочее",
+			"item": [
+				{
+					"name": "Последние акции",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8000/api/promotions/last/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"promotions",
+								"last",
+								""
+							]
+						},
+						"description": "Получение последних акций"
+					},
+					"response": []
+				},
+				{
+					"name": "Залы по театру",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8000/api/halls/?theater_id=1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"halls",
+								""
+							],
+							"query": [
+								{
+									"key": "theater_id",
+									"value": "1",
+									"description": "ID театра"
+								}
+							]
+						},
+						"description": "Получение списка залов для конкретного театра"
+					},
+					"response": []
+				}
+			],
+			"description": "Другие запросы API"
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"// Автоматическое сохранение токена доступа",
+					"if (pm.response.code === 200) {",
+					"    var jsonData = pm.response.json();",
+					"    if (jsonData.access) {",
+					"        pm.environment.set(\"access_token\", jsonData.access);",
+					"        console.log(\"Токен доступа сохранен\");",
+					"    }",
+					"    if (jsonData.refresh) {",
+					"        pm.environment.set(\"refresh_token\", jsonData.refresh);",
+					"        console.log(\"Refresh токен сохранен\");",
+					"    }",
+					"}"
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "access_token",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "refresh_token",
+			"value": "",
+			"type": "string"
+		}
+	]
+} 
