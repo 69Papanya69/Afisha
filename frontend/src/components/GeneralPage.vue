@@ -14,6 +14,30 @@
             </router-link>
         </div>
     </div>
+    
+    <!-- Добавляем новую секцию статистики с использованием агрегатных функций -->
+    <div class="stats-container" v-if="stats">
+        <h2 class="stats-title">Статистика театра</h2>
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-value">{{ stats.total_performances }}</div>
+                <div class="stat-label">Спектаклей</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">{{ stats.upcoming_shows }}</div>
+                <div class="stat-label">Предстоящих показов</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">{{ stats.price_range.avg }}₽</div>
+                <div class="stat-label">Средняя цена</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">{{ stats.reviews_stats.total }}</div>
+                <div class="stat-label">Всего отзывов</div>
+            </div>
+        </div>
+    </div>
+    
     <div class="Wrapper">
         <div class="Action">
             <h3>Акции</h3>
@@ -69,6 +93,7 @@ export default {
       promotions: [],
       performances: [],
       questions: [],
+      stats: null, // Новое поле для хранения статистики
       loading: true,
       error: null,
       searchQuery: '',
@@ -84,20 +109,31 @@ export default {
     document.head.appendChild(fontAwesome);
     
     try {
-      const [promRes, perfRes, questRes] = await Promise.all([
+      // Добавляем запрос статистики с использованием агрегатных функций
+      const [promRes, perfRes, questRes, statsRes] = await Promise.all([
         api.get('promotions/last/'),
         api.get('performances/last/'),
         api.get('questions/last/'),
+        api.get('catalog/stats/'), // Запрос к эндпоинту с агрегатными функциями
       ]);
+      
       this.promotions = promRes.data;
       this.performances = perfRes.data;
       this.lastPerformances = perfRes.data;
       this.questions = questRes.data;
+      this.stats = statsRes.data; // Сохраняем полученную статистику
+      
+      // Округляем среднюю цену для лучшего отображения, если она существует
+      if (this.stats && this.stats.price_range && this.stats.price_range.avg) {
+        this.stats.price_range.avg = Math.round(this.stats.price_range.avg);
+      }
+      
       // Проверка роли администратора (пример: /user/ возвращает {is_admin: true})
       const userRes = await api.get('user/');
       this.isAdmin = userRes.data && (userRes.data.is_admin || userRes.data.is_superuser || userRes.data.is_staff);
     } catch (err) {
       this.error = 'Ошибка загрузки данных';
+      console.error(err);
     } finally {
       this.loading = false;
     }
@@ -150,6 +186,59 @@ export default {
     justify-content: center;
     gap: 40px;
     margin: 40px 0;
+}
+
+/* Добавляем стили для блока статистики */
+.stats-container {
+    max-width: 1200px;
+    margin: 30px auto;
+    padding: 20px;
+    background: #fff;
+    border-radius: 18px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    text-align: center;
+}
+
+.stats-title {
+    font-size: 2.2rem;
+    color: #9E0C0C;
+    margin-bottom: 20px;
+    font-family: 'Vogue', Arial, sans-serif;
+    font-weight: 600;
+}
+
+.stats-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+}
+
+.stat-card {
+    background: #f7f7f7;
+    border-radius: 12px;
+    padding: 18px 25px;
+    min-width: 180px;
+    transition: transform 0.3s ease;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+
+.stat-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+.stat-value {
+    font-size: 2.5rem;
+    color: #9E0C0C;
+    font-weight: 700;
+    margin-bottom: 8px;
+}
+
+.stat-label {
+    font-size: 1rem;
+    color: #555;
+    font-family: 'Philosopher', Arial, sans-serif;
 }
 
 .Action, .Novinki, .Question {
@@ -370,6 +459,13 @@ export default {
         max-width: 95vw;
         min-width: 0;
     }
+    .stats-grid {
+        flex-direction: column;
+        align-items: center;
+    }
+    .stat-card {
+        width: 80%;
+    }
 }
 @media (max-width: 800px) {
     .GeneralPage_Text {
@@ -378,6 +474,12 @@ export default {
     }
     .Action, .Novinki, .Question {
         padding: 18px 8px 14px 8px;
+    }
+    .stat-value {
+        font-size: 2rem;
+    }
+    .stats-title {
+        font-size: 1.8rem;
     }
 }
 </style>
