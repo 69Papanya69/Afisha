@@ -4,6 +4,9 @@
         <div class="nav-links" role="menubar">
             <router-link to="/catalog" class="nav-item" role="menuitem" tabindex="0" aria-label="Каталог спектаклей">Каталог</router-link>
             <router-link v-if="isAdmin" to="/admin/products" class="nav-item" role="menuitem" tabindex="0" aria-label="Админ-панель">Админ</router-link>
+            <router-link v-if="isAdmin" to="/hawk-test" class="nav-item hawk-test-link" role="menuitem" tabindex="0" aria-label="Тестирование Hawk">
+                <span class="hawk-icon">🦅</span> Hawk
+            </router-link>
             <router-link
                 v-if="isAuthenticated"
                 to="/cart"
@@ -127,6 +130,17 @@ export default {
     align-items: center;
     font-size: 14px;
     font-weight: bold;
+}
+
+.hawk-test-link {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    color: #ffd700; /* Gold color for the Hawk link */
+}
+
+.hawk-icon {
+    font-size: 16px;
 }
 
 @media (max-width: 1200px) {

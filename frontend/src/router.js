@@ -7,6 +7,8 @@ import CartPage from './components/CartPage.vue'
 import CheckoutPage from './components/CheckoutPage.vue'
 import OrdersPage from './components/OrdersPage.vue'
 import CatalogPage from './components/CatalogPage.vue'
+import HawkTest from './components/HawkTest.vue'
+import PerformancePage from './components/PerfomancePage.vue'
 import store from './store'
 // import CategoryPage from './components/CategoryPage.vue'
 // import ProductPage from './components/ProductPage.vue'
@@ -24,7 +26,7 @@ const routes = [
     {
       path: '/performances/:id',
       name: 'PerformancePage',
-      component: () => import('./components/PerfomancePage.vue'),
+      component: PerformancePage,
     },
     {
       path: '/cart',
@@ -48,6 +50,11 @@ const routes = [
       path: '/catalog',
       name: 'CatalogPage',
       component: CatalogPage
+    },
+    {
+      path: '/hawk-test',
+      name: 'HawkTest',
+      component: HawkTest
     },
 ]
 

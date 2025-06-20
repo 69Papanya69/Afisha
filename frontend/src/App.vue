@@ -2,6 +2,7 @@
   <div>
     <AppHeader></AppHeader>
     <router-view></router-view>
+    <ErrorTestComponent v-if="isDevelopment" />
   </div>
 </template>
 
@@ -10,11 +11,18 @@ import './assets/css/reset.css';
 import './assets/css/fonts.css'
 import AppHeader from './components/AppHeader.vue';
 import { mapActions } from 'vuex';
+import ErrorTestComponent from './components/ErrorTestComponent.vue';
 
 export default {
   name: 'App',
   components: {
-    AppHeader
+    AppHeader,
+    ErrorTestComponent
+  },
+  data() {
+    return {
+      isDevelopment: process.env.NODE_ENV === 'development'
+    }
   },
   methods: {
     ...mapActions('auth', ['loadUser']),

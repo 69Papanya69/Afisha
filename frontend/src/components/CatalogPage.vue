@@ -76,7 +76,7 @@
         <h2>Новинки</h2>
         <div class="performances-grid">
           <div v-for="performance in featured.latest_performances" :key="performance.id" class="performance-card">
-            <router-link :to="`/performances/${performance.id}`">
+            <div class="performance-content" @click="goToPerformance(performance.id)">
               <div class="performance-image">
                 <img :src="performance.image || require('@/assets/Bad_img.webp')" :alt="performance.name">
               </div>
@@ -91,8 +91,8 @@
                   {{ formatDate(performance.nearest_date) }}
                 </div>
               </div>
-            </router-link>
-            <button @click="addToCart(performance)" class="add-to-cart-btn">В корзину</button>
+            </div>
+            <button @click.stop="addToCart(performance)" class="add-to-cart-btn">В корзину</button>
           </div>
         </div>
       </div>
@@ -102,7 +102,7 @@
         <h2>Популярные</h2>
         <div class="performances-grid">
           <div v-for="performance in featured.popular_performances" :key="performance.id" class="performance-card">
-            <router-link :to="`/performances/${performance.id}`">
+            <div class="performance-content" @click="goToPerformance(performance.id)">
               <div class="performance-image">
                 <img :src="performance.image || require('@/assets/Bad_img.webp')" :alt="performance.name">
               </div>
@@ -117,8 +117,8 @@
                   {{ formatDate(performance.nearest_date) }}
                 </div>
               </div>
-            </router-link>
-            <button @click="addToCart(performance)" class="add-to-cart-btn">В корзину</button>
+            </div>
+            <button @click.stop="addToCart(performance)" class="add-to-cart-btn">В корзину</button>
           </div>
         </div>
       </div>
@@ -128,7 +128,7 @@
         <h2>Ближайшие</h2>
         <div class="performances-grid">
           <div v-for="performance in featured.upcoming_performances" :key="performance.id" class="performance-card">
-            <router-link :to="`/performances/${performance.id}`">
+            <div class="performance-content" @click="goToPerformance(performance.id)">
               <div class="performance-image">
                 <img :src="performance.image || require('@/assets/Bad_img.webp')" :alt="performance.name">
               </div>
@@ -143,8 +143,8 @@
                   {{ formatDate(performance.nearest_date) }}
                 </div>
               </div>
-            </router-link>
-            <button @click="addToCart(performance)" class="add-to-cart-btn">В корзину</button>
+            </div>
+            <button @click.stop="addToCart(performance)" class="add-to-cart-btn">В корзину</button>
           </div>
         </div>
       </div>
@@ -154,7 +154,7 @@
         <h2>Бюджетные</h2>
         <div class="performances-grid">
           <div v-for="performance in featured.budget_performances" :key="performance.id" class="performance-card">
-            <router-link :to="`/performances/${performance.id}`">
+            <div class="performance-content" @click="goToPerformance(performance.id)">
               <div class="performance-image">
                 <img :src="performance.image || require('@/assets/Bad_img.webp')" :alt="performance.name">
               </div>
@@ -169,8 +169,8 @@
                   {{ formatDate(performance.nearest_date) }}
                 </div>
               </div>
-            </router-link>
-            <button @click="addToCart(performance)" class="add-to-cart-btn">В корзину</button>
+            </div>
+            <button @click.stop="addToCart(performance)" class="add-to-cart-btn">В корзину</button>
           </div>
         </div>
       </div>
@@ -181,7 +181,7 @@
       <h2>Результаты поиска</h2>
       <div v-if="filteredPerformances.length > 0" class="performances-grid">
         <div v-for="performance in filteredPerformances" :key="performance.id" class="performance-card">
-          <router-link :to="`/performances/${performance.id}`">
+          <div class="performance-content" @click="goToPerformance(performance.id)">
             <div class="performance-image">
               <img :src="performance.image || require('@/assets/Bad_img.webp')" :alt="performance.name">
             </div>
@@ -196,8 +196,8 @@
                 {{ formatDate(performance.nearest_date) }}
               </div>
             </div>
-          </router-link>
-          <button @click="addToCart(performance)" class="add-to-cart-btn">В корзину</button>
+          </div>
+          <button @click.stop="addToCart(performance)" class="add-to-cart-btn">В корзину</button>
         </div>
       </div>
       <div v-else class="no-results">
@@ -215,7 +215,7 @@
 
       <div v-if="selectedCategory.performances.length > 0" class="performances-grid">
         <div v-for="performance in selectedCategory.performances" :key="performance.id" class="performance-card">
-          <router-link :to="`/performances/${performance.id}`">
+          <div class="performance-content" @click="goToPerformance(performance.id)">
             <div class="performance-image">
               <img :src="performance.image || require('@/assets/Bad_img.webp')" :alt="performance.name">
             </div>
@@ -230,8 +230,8 @@
                 {{ formatDate(performance.nearest_date) }}
               </div>
             </div>
-          </router-link>
-          <button @click="addToCart(performance)" class="add-to-cart-btn">В корзину</button>
+          </div>
+          <button @click.stop="addToCart(performance)" class="add-to-cart-btn">В корзину</button>
         </div>
       </div>
       <div v-else class="no-results">
@@ -418,6 +418,10 @@ export default {
           alert('Не удалось получить информацию о расписании.');
           this.loading = false;
         });
+    },
+    
+    goToPerformance(performanceId) {
+      this.$router.push({ name: 'PerformancePage', params: { id: performanceId } });
     }
   }
 };
@@ -560,6 +564,12 @@ h2 {
 .performance-card:hover {
   transform: translateY(-5px);
   box-shadow: 0 8px 16px rgba(0,0,0,0.15);
+}
+
+.performance-content {
+  cursor: pointer;
+  display: block;
+  width: 100%;
 }
 
 .performance-image {
